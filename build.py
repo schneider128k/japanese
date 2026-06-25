@@ -136,6 +136,29 @@ def _enhance_html(html: str) -> str:
 
 # ── HTML assembly ─────────────────────────────────────────────────────────────
 
+_JISHO_SCRIPT = """\
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var base = 'https://jisho.org/search/';
+  document.querySelectorAll('tbody tr.part td:first-child').forEach(function (td) {
+    var word = td.textContent.trim();
+    td.title = word + ' — Jisho で調べる';
+    td.addEventListener('click', function () {
+      window.open(base + encodeURIComponent(word), '_blank');
+    });
+  });
+  document.querySelectorAll('pre').forEach(function (pre) {
+    var lines = pre.textContent.trim().split('\\n');
+    pre.innerHTML = lines.map(function (line) {
+      line = line.trim();
+      if (!line) return '';
+      return '<a class="vocab-link" href="' + base + encodeURIComponent(line) +
+             '" target="_blank">' + line + '</a>';
+    }).join('\\n');
+  });
+});
+</script>"""
+
 _HTML_TMPL = """\
 <!DOCTYPE html>
 <html lang="ja">
@@ -150,6 +173,7 @@ _HTML_TMPL = """\
 {print_btn}
 {toggle}
 {body}
+{script}
 </body>
 </html>"""
 
@@ -170,6 +194,7 @@ def _md_to_html(text: str, css: str) -> str:
         print_btn=PRINT_BTN,
         toggle=TOGGLE_BTN,
         body=body,
+        script=_JISHO_SCRIPT,
     )
 
 
@@ -207,6 +232,7 @@ def build_all(story_dirs: list) -> None:
         print_btn=PRINT_BTN,
         toggle=TOGGLE_BTN,
         body=body,
+        script=_JISHO_SCRIPT,
     )
     os.makedirs("build", exist_ok=True)
     out = "build/all.html"

@@ -112,6 +112,19 @@ tr.write-line td {
   background-size: 2.8em 2.8em; height: 2.8em;
 }
 
+/* Jisho click targets */
+tbody tr.part td:first-child {
+  cursor: pointer;
+  transition: color .12s;
+}
+tbody tr.part td:first-child:hover { color: var(--seal); text-decoration: underline; }
+a.vocab-link { color: inherit; text-decoration: none; }
+a.vocab-link:hover { color: var(--seal); text-decoration: underline; }
+@media print {
+  tbody tr.part td:first-child { cursor: default; text-decoration: none; }
+  a.vocab-link { color: inherit; text-decoration: none; }
+}
+
 /* Vocabulary */
 h2 {
   font-family: sans-serif; color: var(--slate); font-size: 12pt;

@@ -211,5 +211,30 @@
 考える
 気をつける</pre>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var base = 'https://jisho.org/search/';
+
+  // Parse table: click phrase cell -> Jisho search
+  document.querySelectorAll('tbody tr.part td:first-child').forEach(function (td) {
+    var word = td.textContent.trim();
+    td.title = word + ' — Jisho で調べる';
+    td.addEventListener('click', function () {
+      window.open(base + encodeURIComponent(word), '_blank');
+    });
+  });
+
+  // Vocabulary list: wrap each lemma in a Jisho link
+  document.querySelectorAll('pre').forEach(function (pre) {
+    var lines = pre.textContent.trim().split('\n');
+    pre.innerHTML = lines.map(function (line) {
+      line = line.trim();
+      if (!line) return '';
+      var href = base + encodeURIComponent(line);
+      return '<a class="vocab-link" href="' + href + '" target="_blank">' + line + '</a>';
+    }).join('\n');
+  });
+});
+</script>
 </body>
 </html>
