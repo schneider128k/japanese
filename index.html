@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>NHK Easy Study Sheets</title>
+<link rel="stylesheet" href="assets/print.css">
+<style>
+  @media screen {
+    body { padding: 32px; }
+    .index-title { font-family: var(--jp); font-size: 22pt; border-bottom: 2px solid var(--seal); padding-bottom: 6px; margin-bottom: 6px; }
+    .index-subtitle { color: var(--faint); font-style: italic; margin: 0 0 24px; }
+    .story-list { list-style: none; padding: 0; margin: 0 0 32px; }
+    .story-list li { border-bottom: 1px solid var(--rule); padding: 10px 0; }
+    .story-list li:first-child { border-top: 1px solid var(--rule); }
+    .story-date { font-size: 9pt; color: var(--faint); margin-right: 8px; font-variant-numeric: tabular-nums; }
+    .story-list a { color: var(--slate); text-decoration: none; font-family: var(--jp); font-size: 13pt; }
+    .story-list a:hover { color: var(--seal); }
+    .print-all { display: inline-block; margin-top: 8px; font-family: var(--jp); font-size: 12pt;
+                 background: var(--slate); color: #fff; border-radius: 4px;
+                 padding: 6px 16px; text-decoration: none; }
+    .print-all:hover { background: var(--seal); }
+  }
+</style>
+</head>
+<body>
+
+<p class="index-title">NHK Easy 勉強シート</p>
+<p class="index-subtitle">NHK Easy News study sheets — sentence breakdowns, furigana, and vocabulary for Renshuu</p>
+
+<ul class="story-list">
+  <li>
+    <span class="story-date">2026-06-22</span>
+    <a href="stories/2026-06-22-ukraine-drone/study.html">ウクライナが新しいドローンでロシアの石油工場を攻撃</a>
+  </li>
+</ul>
+
+<a class="print-all" href="build/all.html">全シートを印刷 / Print all sheets</a>
+
+</body>
+</html>
