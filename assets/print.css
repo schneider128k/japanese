@@ -51,6 +51,19 @@ body.is-no-ruby rt { visibility: hidden; }
 @media print {
   body.is-no-ruby rt { display: none; }
   rp                 { display: none; }
+
+  /* Clean white print — no gray tints on practice areas */
+  tr.write-line td,
+  .write,
+  pre { background: white; }
+
+  /* Suppress browser-injected URL / date line by zeroing page margins and
+     moving them onto the body. Combined with "Headers and footers" off in
+     Chrome's print dialog this gives a completely clean sheet. */
+  @page {
+    size: A4;
+    margin: 14mm 14mm;
+  }
 }
 
 /* ── Article header ──────────────────────────────────────────────────────── */
@@ -125,7 +138,7 @@ tr.write-line + tr.part td { padding-top: 8px; }
 
 /* ── Per-part handwriting rows ───────────────────────────────────────────── */
 tr.write-line td {
-  height: 2.8em;
+  height: 2.2em;
   border-bottom: 1px solid var(--line);
   background: var(--paper);
   padding: 0;
@@ -146,7 +159,7 @@ tr.write-line td {
   margin-bottom: 5px;
 }
 .write {
-  height: 3.2em; margin: 6px 0;
+  height: 2.8em; margin: 5px 0;
   border-bottom: 1px solid var(--line);
   background: var(--paper);
 }
@@ -155,8 +168,8 @@ tr.write-line td {
   background-image:
     linear-gradient(var(--rule) 1px, transparent 1px),
     linear-gradient(90deg, var(--rule) 1px, transparent 1px);
-  background-size: 3.2em 3.2em;
-  height: 3.2em;
+  background-size: 2.8em 2.8em;
+  height: 2.8em;
 }
 
 /* ── Vocabulary section ──────────────────────────────────────────────────── */

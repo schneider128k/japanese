@@ -18,8 +18,8 @@ import markdown
 # ── Config ────────────────────────────────────────────────────────────────────
 PRACTICE_LINES = True
 PRACTICE_STYLE = "ruled"   # "ruled" | "grid"
-WRITE_REPS     = 2         # write-line rows per phrase in the parse table
-SENTENCE_REPS  = 3         # full-sentence write lines per sentence block
+WRITE_REPS     = 1         # write-line rows per phrase in the parse table
+SENTENCE_REPS  = 2         # full-sentence write lines per sentence block
 
 MD_EXTS = ["tables", "md_in_html", "extra"]
 
