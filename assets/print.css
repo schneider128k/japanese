@@ -126,7 +126,7 @@ a.vocab-link:hover { color: var(--seal); text-decoration: underline; }
 }
 
 /* Vocabulary */
-h2 {
+.renshuu-vocab h2 {
   font-family: sans-serif; color: var(--slate); font-size: 12pt;
   border-bottom: 1px solid var(--seal); padding-bottom: 3px; margin-top: 30px;
 }
@@ -135,6 +135,16 @@ pre {
   background: var(--paper); border: 1px solid var(--rule);
   border-radius: 5px; padding: 10px 14px; line-height: 1.9;
 }
+
+/* Copy-to-clipboard button */
+#copy-vocab {
+  font-family: Georgia, serif; font-size: 9.5pt;
+  background: var(--slate); color: white;
+  border: none; border-radius: 3px;
+  padding: 4px 14px; cursor: pointer;
+  margin-bottom: 8px; display: block;
+}
+#copy-vocab:hover { background: var(--seal); }
 
 /* ══════════════════════════════════════════════════════════════════════════
    PRINT — US Letter, maximise usable area
@@ -180,7 +190,9 @@ pre {
   .sentence-write::before { font-size: 7pt; margin-bottom: 3px; }
   .write { height: 2.3em; margin: 3px 0; }
 
-  /* Vocabulary */
-  h2 { font-size: 11pt; margin-top: 16px; padding-bottom: 2px; }
-  pre { font-size: 10pt; padding: 7px 11px; line-height: 1.7; }
+  /* Vocabulary section — not needed on paper */
+  .renshuu-vocab { display: none; }
+
+  /* Vocabulary (kept for completeness if .renshuu-vocab isn't present) */
+  #copy-vocab { display: none; }
 }

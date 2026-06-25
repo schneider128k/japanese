@@ -96,8 +96,15 @@ def _enhance_html(html: str) -> str:
       2. Add class="part" to tbody <tr> rows; insert write-line rows after each
       3. Inject .sentence-write block after each </table> inside .sentence
     """
-    # 0. Strip sentence number headings (keep .sentence div structure, lose the label)
+    # 0. Strip sentence number headings
     html = re.sub(r'<h3>[^<]*Sentence\s+\d+[^<]*</h3>\s*\n?', '', html)
+
+    # 0b. Wrap vocabulary section in .renshuu-vocab div + add copy button
+    html = re.sub(r'(<h2>[^<]*Vocabulary)',
+                  '<div class="renshuu-vocab">\n\\1', html)
+    html = re.sub(r'(<pre>)',
+                  '<button id="copy-vocab">Copy to clipboard</button>\n\\1', html)
+    html = re.sub(r'(</pre>)', r'\1\n</div>', html)
 
     # 1. Translation label
     html = re.sub(
@@ -140,6 +147,7 @@ _JISHO_SCRIPT = """\
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   var base = 'https://jisho.org/search/';
+
   document.querySelectorAll('tbody tr.part td:first-child').forEach(function (td) {
     var word = td.textContent.trim();
     td.title = word + ' — Jisho で調べる';
@@ -147,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
       window.open(base + encodeURIComponent(word), '_blank');
     });
   });
+
   document.querySelectorAll('pre').forEach(function (pre) {
     var lines = pre.textContent.trim().split('\\n');
     pre.innerHTML = lines.map(function (line) {
@@ -156,6 +165,25 @@ document.addEventListener('DOMContentLoaded', function () {
              '" target="_blank">' + line + '</a>';
     }).join('\\n');
   });
+
+  var copyBtn = document.getElementById('copy-vocab');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function () {
+      var links = document.querySelectorAll('.renshuu-vocab pre a.vocab-link');
+      var text = Array.from(links).map(function (a) { return a.textContent.trim(); }).join('\\n');
+      navigator.clipboard.writeText(text).then(function () {
+        copyBtn.textContent = 'Copied!';
+        setTimeout(function () { copyBtn.textContent = 'Copy to clipboard'; }, 2000);
+      }).catch(function () {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(function () { copyBtn.textContent = 'Copy to clipboard'; }, 2000);
+      });
+    });
+  }
 });
 </script>"""
 

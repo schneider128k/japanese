@@ -201,8 +201,10 @@
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
 
+<div class="renshuu-vocab">
 <h2>Vocabulary → Renshuu</h2>
 <p>Paste each line into the Renshuu term search, then pick the matching dictionary entry.</p>
+<button id="copy-vocab">Copy to clipboard</button>
 <pre>攻撃
 始める
 大統領
@@ -219,6 +221,7 @@
 大きい
 考える
 気をつける</pre>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -239,10 +242,30 @@ document.addEventListener('DOMContentLoaded', function () {
     pre.innerHTML = lines.map(function (line) {
       line = line.trim();
       if (!line) return '';
-      var href = base + encodeURIComponent(line);
-      return '<a class="vocab-link" href="' + href + '" target="_blank">' + line + '</a>';
+      return '<a class="vocab-link" href="' + base + encodeURIComponent(line) +
+             '" target="_blank">' + line + '</a>';
     }).join('\n');
   });
+
+  // Copy vocab list to clipboard
+  var copyBtn = document.getElementById('copy-vocab');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function () {
+      var links = document.querySelectorAll('.renshuu-vocab pre a.vocab-link');
+      var text = Array.from(links).map(function (a) { return a.textContent.trim(); }).join('\n');
+      navigator.clipboard.writeText(text).then(function () {
+        copyBtn.textContent = 'Copied!';
+        setTimeout(function () { copyBtn.textContent = 'Copy to clipboard'; }, 2000);
+      }).catch(function () {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(function () { copyBtn.textContent = 'Copy to clipboard'; }, 2000);
+      });
+    });
+  }
 });
 </script>
 </body>
