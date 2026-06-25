@@ -1,18 +1,16 @@
-/* ── Page setup ──────────────────────────────────────────────────────────── */
-@page { size: A4; margin: 18mm 16mm; }
-* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-
+/* ── Shared variables ────────────────────────────────────────────────────── */
 :root {
   --ink:   #1A1A1A;
   --seal:  #C8442E;
   --slate: #2E5266;
   --faint: #6B6B68;
   --rule:  #E4E2DA;
-  --line:  #CFC8BC;   /* slightly darker warm tone for practice lines */
-  --paper: #FDFAF6;   /* warm off-white for handwriting areas */
+  --line:  #CFC8BC;
+  --paper: #FDFAF6;
   --jp: "Noto Serif JP","Noto Serif CJK JP","Hiragino Mincho ProN","Yu Mincho",serif;
 }
 
+/* ── Screen layout ───────────────────────────────────────────────────────── */
 body {
   font-family: Georgia, "Times New Roman", serif;
   color: var(--ink);
@@ -22,7 +20,7 @@ body {
 }
 @media screen { body { padding: 28px 28px 80px; } }
 
-/* ── Furigana toggle button (screen only) ────────────────────────────────── */
+/* Furigana toggle + print button */
 #furigana-toggle,
 #print-btn {
   position: fixed; top: 14px;
@@ -36,150 +34,140 @@ body {
 #print-btn       { right: 192px; background: var(--seal);  }
 #furigana-toggle:hover { background: #1e3a4f; }
 #print-btn:hover       { background: #a33826; }
-@media print { #furigana-toggle, #print-btn { display: none; } }
 
-/* ── Ruby / furigana ─────────────────────────────────────────────────────────
-   visibility:hidden (not display:none) preserves line-height when toggling,
-   matching NHK Easy's own approach. Print switches to display:none so a
-   hidden-furigana version reclaims the vertical space on paper.
-   ─────────────────────────────────────────────────────────────────────────── */
+/* Ruby */
 ruby { ruby-align: center; }
 rt   { font-size: .55em; color: var(--seal); }
 rp   { display: none; }
-
 body.is-no-ruby rt { visibility: hidden; }
-@media print {
-  body.is-no-ruby rt { display: none; }
-  rp                 { display: none; }
 
-  /* Clean white print — no gray tints on practice areas */
-  tr.write-line td,
-  .write,
-  pre { background: white; }
-
-  /* Suppress browser-injected URL / date line by zeroing page margins and
-     moving them onto the body. Combined with "Headers and footers" off in
-     Chrome's print dialog this gives a completely clean sheet. */
-  @page {
-    size: A4;
-    margin: 14mm 14mm;
-  }
-}
-
-/* ── Article header ──────────────────────────────────────────────────────── */
+/* Article header */
 h1 {
-  font-family: var(--jp); font-size: 20pt;
-  line-height: 2.7;              /* generous headroom for headline furigana */
-  margin: 0 0 4px;
-  border-bottom: 2.5px solid var(--seal);
-  padding-bottom: 8px;
+  font-family: var(--jp); font-size: 20pt; line-height: 2.7;
+  margin: 0 0 4px; border-bottom: 2.5px solid var(--seal); padding-bottom: 8px;
 }
-h1 + p {
-  color: var(--faint); font-style: italic;
-  font-size: 11pt; margin: 3px 0 0;
-}
-.meta {
-  color: var(--faint); font-size: 8.5pt;
-  margin: 6px 0 22px; line-height: 1.4;
-}
+h1 + p { color: var(--faint); font-style: italic; font-size: 11pt; margin: 3px 0 0; }
+.meta  { color: var(--faint); font-size: 8.5pt; margin: 6px 0 22px; line-height: 1.4; }
 .meta a { color: var(--slate); }
 
-/* ── Sentence number headings — not needed ───────────────────────────────── */
+/* Sentence blocks */
 .sentence h3 { display: none; }
 
-/* ── Write-line rows and full-sentence practice: screen vs print ─────────── */
 @media screen {
-  tr.write-line    { display: none; }
-  .sentence-write  { display: none; }
+  tr.write-line   { display: none; }
+  .sentence-write { display: none; }
 }
 
-/* ── Sentence blocks ─────────────────────────────────────────────────────── */
 .sentence {
-  margin: 0 0 8px;
-  padding-top: 16px;
+  break-inside: avoid; page-break-inside: avoid;
+  margin: 0; padding-top: 16px;
   border-top: 1px solid var(--rule);
 }
-
-/* Japanese sentence line — 2.7× line-height gives ruby plenty of headroom */
 .sentence .jp {
-  font-family: var(--jp); font-size: 16pt;
-  line-height: 2.7; display: block;
-  margin: 0 0 5px;
+  font-family: var(--jp); font-size: 16pt; line-height: 2.7;
+  display: block; margin: 0 0 5px;
 }
-
-/* Translation — italic slate, no label */
 .sentence .translation {
   font-style: italic; color: var(--slate);
-  font-size: 10.5pt; margin: 0 0 10px;
-  line-height: 1.4;
+  font-size: 10.5pt; margin: 0 0 10px; line-height: 1.4;
 }
 
-/* ── Parse table ─────────────────────────────────────────────────────────── */
-table {
-  border-collapse: collapse; width: 100%;
-  font-size: 9.5pt; margin: 0;
-}
+/* Parse table */
+table { border-collapse: collapse; width: 100%; font-size: 9.5pt; margin: 0; }
 thead th {
-  text-align: left; color: var(--slate);
-  font-variant: small-caps; font-size: 8.5pt;
-  letter-spacing: .04em;
-  border-bottom: 1.5px solid var(--slate);
-  padding: 3px 6px 4px;
+  text-align: left; color: var(--slate); font-variant: small-caps;
+  font-size: 8.5pt; letter-spacing: .04em;
+  border-bottom: 1.5px solid var(--slate); padding: 3px 6px 4px;
 }
 tbody tr.part td {
-  padding: 5px 6px 3px;
-  vertical-align: top;
-  border-bottom: none;       /* write-line row immediately below supplies the rule */
+  padding: 5px 6px 3px; vertical-align: top; border-bottom: none;
 }
 tbody tr.part td:first-child { font-family: var(--jp); }
-
-/* Padding reset at start of each new part after write-lines */
 tr.write-line + tr.part td { padding-top: 8px; }
 
-/* ── Per-part handwriting rows ───────────────────────────────────────────── */
 tr.write-line td {
-  height: 2.2em;
-  border-bottom: 1px solid var(--line);
-  background: var(--paper);
-  padding: 0;
+  height: 2.2em; border-bottom: 1px solid var(--line);
+  background: var(--paper); padding: 0;
   border-left: none; border-right: none; border-top: none;
 }
 
-/* ── Full-sentence handwriting area ─────────────────────────────────────── */
+/* Full-sentence practice */
 .sentence-write {
-  margin: 14px 0 0;
-  padding-top: 9px;
-  border-top: 1px dashed var(--rule);
+  margin: 14px 0 0; padding-top: 9px; border-top: 1px dashed var(--rule);
 }
 .sentence-write::before {
   content: "全文を書く";
-  display: block;
-  font-family: var(--jp); font-size: 7.5pt;
-  color: var(--faint); letter-spacing: .06em;
-  margin-bottom: 5px;
+  display: block; font-family: var(--jp); font-size: 7.5pt;
+  color: var(--faint); letter-spacing: .06em; margin-bottom: 5px;
 }
 .write {
   height: 2.8em; margin: 5px 0;
-  border-bottom: 1px solid var(--line);
-  background: var(--paper);
+  border-bottom: 1px solid var(--line); background: var(--paper);
 }
 .write.grid {
   border: 1px solid var(--rule);
   background-image:
     linear-gradient(var(--rule) 1px, transparent 1px),
     linear-gradient(90deg, var(--rule) 1px, transparent 1px);
-  background-size: 2.8em 2.8em;
-  height: 2.8em;
+  background-size: 2.8em 2.8em; height: 2.8em;
 }
 
-/* ── Vocabulary section ──────────────────────────────────────────────────── */
+/* Vocabulary */
 h2 {
   font-family: sans-serif; color: var(--slate); font-size: 12pt;
-  border-bottom: 1px solid var(--seal); padding-bottom: 3px;
-  margin-top: 30px;
+  border-bottom: 1px solid var(--seal); padding-bottom: 3px; margin-top: 30px;
 }
 pre, code { font-family: var(--jp); font-size: 11.5pt; }
 pre {
-  background: #FAF9F6; border: 1px solid var(--rule);
+  background: var(--paper); border: 1px solid var(--rule);
   border-radius: 5px; padding: 10px 14px; line-height: 1.9;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PRINT — US Letter, maximise usable area
+   ══════════════════════════════════════════════════════════════════════════ */
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  @page {
+    size: letter;
+    margin: 10mm 11mm;
+  }
+
+  #furigana-toggle, #print-btn { display: none; }
+
+  body { max-width: none; font-size: 10pt; line-height: 1.4; }
+
+  /* Furigana */
+  body.is-no-ruby rt { display: none; }
+  rp { display: none; }
+
+  /* White backgrounds — no gray on paper */
+  tr.write-line td, .write, pre { background: white; }
+
+  /* Compact header */
+  h1 { font-size: 16pt; line-height: 2.4; margin-bottom: 2px; padding-bottom: 5px; }
+  h1 + p { font-size: 9.5pt; margin: 1px 0 0; }
+  .meta { font-size: 7.5pt; margin: 4px 0 12px; }
+
+  /* Compact sentence blocks */
+  .sentence { padding-top: 9px; }
+  .sentence .jp { font-size: 13pt; line-height: 2.4; margin-bottom: 2px; }
+  .sentence .translation { font-size: 9.5pt; margin-bottom: 6px; }
+
+  /* Compact table */
+  table { font-size: 9pt; }
+  thead th { font-size: 8pt; padding: 2px 5px 3px; letter-spacing: 0; }
+  tbody tr.part td { padding: 3px 5px 2px; }
+  tr.write-line + tr.part td { padding-top: 5px; }
+
+  /* Compact write lines */
+  tr.write-line td { height: 1.9em; }
+  .sentence-write { margin-top: 7px; padding-top: 5px; }
+  .sentence-write::before { font-size: 7pt; margin-bottom: 3px; }
+  .write { height: 2.3em; margin: 3px 0; }
+
+  /* Vocabulary */
+  h2 { font-size: 11pt; margin-top: 16px; padding-bottom: 2px; }
+  pre { font-size: 10pt; padding: 7px 11px; line-height: 1.7; }
 }
