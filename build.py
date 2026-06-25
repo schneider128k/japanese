@@ -33,6 +33,7 @@ FONTS_LINK = (
     ':wght@400;700&display=swap" rel="stylesheet">'
 )
 
+PRINT_BTN = '<button id="print-btn" onclick="window.print()">印刷</button>'
 TOGGLE_BTN = (
     '<button id="furigana-toggle" '
     "onclick=\"document.body.classList.toggle('is-no-ruby')\">"
@@ -95,6 +96,9 @@ def _enhance_html(html: str) -> str:
       2. Add class="part" to tbody <tr> rows; insert write-line rows after each
       3. Inject .sentence-write block after each </table> inside .sentence
     """
+    # 0. Strip sentence number headings (keep .sentence div structure, lose the label)
+    html = re.sub(r'<h3>[^<]*Sentence\s+\d+[^<]*</h3>\s*\n?', '', html)
+
     # 1. Translation label
     html = re.sub(
         r'<p><strong>EN\s*[—–\-]+\s*</strong>\s*',
@@ -143,6 +147,7 @@ _HTML_TMPL = """\
 <link rel="stylesheet" href="{css}">
 </head>
 <body>
+{print_btn}
 {toggle}
 {body}
 </body>
@@ -162,6 +167,7 @@ def _md_to_html(text: str, css: str) -> str:
         title=_title_from_html(body),
         fonts=FONTS_LINK,
         css=css,
+        print_btn=PRINT_BTN,
         toggle=TOGGLE_BTN,
         body=body,
     )
@@ -198,6 +204,7 @@ def build_all(story_dirs: list) -> None:
         title="All Study Sheets",
         fonts=FONTS_LINK,
         css=CSS_ALL,
+        print_btn=PRINT_BTN,
         toggle=TOGGLE_BTN,
         body=body,
     )

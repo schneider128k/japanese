@@ -23,17 +23,20 @@ body {
 @media screen { body { padding: 28px 28px 80px; } }
 
 /* ── Furigana toggle button (screen only) ────────────────────────────────── */
-#furigana-toggle {
-  position: fixed; top: 14px; right: 20px;
+#furigana-toggle,
+#print-btn {
+  position: fixed; top: 14px;
   font-family: var(--jp); font-size: 10.5pt;
-  background: var(--slate); color: #fff;
-  border: none; border-radius: 4px;
+  color: #fff; border: none; border-radius: 4px;
   padding: 5px 15px; cursor: pointer;
   box-shadow: 0 1px 4px rgba(0,0,0,.25);
   z-index: 100;
 }
-#furigana-toggle:hover { background: var(--seal); }
-@media print { #furigana-toggle { display: none; } }
+#furigana-toggle { right: 20px;  background: var(--slate); }
+#print-btn       { right: 192px; background: var(--seal);  }
+#furigana-toggle:hover { background: #1e3a4f; }
+#print-btn:hover       { background: #a33826; }
+@media print { #furigana-toggle, #print-btn { display: none; } }
 
 /* ── Ruby / furigana ─────────────────────────────────────────────────────────
    visibility:hidden (not display:none) preserves line-height when toggling,
@@ -68,8 +71,14 @@ h1 + p {
 }
 .meta a { color: var(--slate); }
 
-/* ── Sentence number headings — hidden to save space ───────────────────── */
+/* ── Sentence number headings — not needed ───────────────────────────────── */
 .sentence h3 { display: none; }
+
+/* ── Write-line rows and full-sentence practice: screen vs print ─────────── */
+@media screen {
+  tr.write-line    { display: none; }
+  .sentence-write  { display: none; }
+}
 
 /* ── Sentence blocks ─────────────────────────────────────────────────────── */
 .sentence {
